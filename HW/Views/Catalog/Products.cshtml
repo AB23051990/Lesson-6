@@ -1,0 +1,8 @@
+﻿@{
+    ViewData["Title"] = "Products";
+}
+
+@foreach (var cat in Model.Products)
+{
+  <div>@cat.Id @cat.Name</div> 
+}
