@@ -1,8 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Products";
+    ViewData["Title"] = "Продукция";
 }
 
 @foreach (var cat in Model.Products)
 {
-  <div>@cat.Id @cat.Name</div> 
+  <div>@cat.Id @cat.Name @Model.PricesDict </div> 
+  
 }
+
+ 
