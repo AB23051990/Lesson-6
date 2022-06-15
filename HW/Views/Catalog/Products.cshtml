@@ -4,8 +4,11 @@
 
 @foreach (var cat in Model.Products)
 {
-  <div>@cat.Id @cat.Name @Model.PricesDict </div> 
-  
+  <div>@cat.Id @cat.Name @Model.PricesDict
+      <form method="post">
+          <input type="submit" required value="Удалить"/>
+          </form>
+          </div>
 }
 
- 
+

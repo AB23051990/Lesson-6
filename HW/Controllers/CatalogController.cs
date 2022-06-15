@@ -1,5 +1,6 @@
 ﻿using HW.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace HW.Controllers
@@ -19,24 +20,30 @@ namespace HW.Controllers
 
 
         private static Catalog _catalog = new();
+
         [HttpGet]
         public IActionResult Categories()
         {
             return View(_catalog);
-        }
+        }        
         public IActionResult Products()
         {
             return View(_catalog);
         }        
 
         [HttpPost]
-        public IActionResult Categories(Category category, Prices prices)
-        {
+        public IActionResult Categories(Category category, Prices price)
+        {            
             _catalog.Products.Add(category);
+            //_catalog.PricesDict.TryAdd(price); не работает! не знаю почему!
             return View(_catalog);
         }
-        
-
+        public IActionResult Products(Category category, Prices price)
+        {          
+            _catalog.Products.Remove(category);         
+            //_catalog.PricesDict.Remove(price); не работает! не знаю почему!
+            return View(_catalog);
+        }
 
     }
 }
