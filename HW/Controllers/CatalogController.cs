@@ -1,5 +1,6 @@
 ﻿using HW.Models;
 using Microsoft.AspNetCore.Mvc;
+
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -20,6 +21,12 @@ namespace HW.Controllers
 
 
         private static Catalog _catalog = new();
+        private readonly IEmailSender _emailSender;
+
+        public CatalogController (IEmailSender emailSender)
+        {
+            _emailSender = emailSender;
+        }
 
         [HttpGet]
         public IActionResult Categories()
@@ -29,21 +36,20 @@ namespace HW.Controllers
         public IActionResult Products()
         {
             return View(_catalog);
-        }        
+        }
+        public IActionResult SendMessage()
+        {
+            return View(_catalog);
+        }
 
         [HttpPost]
         public IActionResult Categories(Category category, Prices price)
         {            
             _catalog.Products.Add(category);
-            //_catalog.PricesDict.TryAdd(price); не работает! не знаю почему!
+            _emailSender.Send(senderName: "Оповещатель", to: "mail@mail.ru", subject: "",  htmlBody: "", senderEmail: "");
+            
             return View(_catalog);
         }
-        public IActionResult Products(Category category, Prices price)
-        {          
-            _catalog.Products.Remove(category);         
-            //_catalog.PricesDict.Remove(price); не работает! не знаю почему!
-            return View(_catalog);
-        }
-
+       
     }
 }
