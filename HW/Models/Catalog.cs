@@ -4,8 +4,7 @@ namespace HW.Models
 {
     public class Catalog
     {
-        public List<Category> Products { get; set; } = new();
-        
+        public List<Category> Products { get; set; } = new();        
         private readonly object _syncObj1 = new();
         public void AddProduct(Category product)
         {
@@ -20,9 +19,7 @@ namespace HW.Models
             {
                 Products.Remove(product);
             }
-        }        
-
-
+        }
 
         public record Prices(Guid Price);
         public ConcurrentDictionary<Guid, Prices> PricesDict = new();

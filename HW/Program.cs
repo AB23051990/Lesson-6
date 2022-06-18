@@ -1,8 +1,16 @@
+using HW.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<SmtpConfig>(builder.Configuration.GetSection("SmtpConfig"));
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<Catalog>();
+//builder.Services.AddSingleton<MELProtocolLogger>();
+builder.Services.AddScoped<IEmailSender,MailKitSmtpEmailSender>();
 
+//ValidateAllConfigsBeta();
+ 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
