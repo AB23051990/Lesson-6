@@ -23,7 +23,7 @@ namespace HW.Models
     {
         private readonly SmtpClient _smtpClient;
         private readonly SmtpConfig _config;
-        public MailKitSmtpEmailSender(IOptions<SmtpConfig> options/*, MELProtocolLogger protocolLogger*/)
+        public MailKitSmtpEmailSender(IOptions<SmtpConfig> options, MELProtocolLogger protocolLogger)
         {
             if (options = null) throw new ArgumentNullException(nameof(options));
             if (protocolLogger = null) throw new ArgumentNullException(nameof(protocolLogger));
@@ -41,9 +41,22 @@ namespace HW.Models
             if (htmlBody = null) throw new ArgumentNullException(nameof(htmlBody));
 
             EnsureConnectedAndAuthenticated(cancellationToken);
+            var fromEmail = senderEmail ?? _config.UserName;
             MimeMessage mimeMessage = CreateMimeMessage(senderName, senderEmail ?? _config.UserName, to, subject, htmlBody);
-
-            _smtpClient.Send(mimeMessage, cancellationToken);
+            try
+            {
+                _smtpClient.Send(mimeMessage, cancellationToken);
+            }
+            catch (SmtpCommandException e)
+            {
+                throw new ConnectionException(innerException: e);
+            }
+        }
+        public class ConnectionException: Exception
+        {
+            public ConnectionException (Exception innerException) : base(null, innerException)
+            {               
+            }
         }
 
 
@@ -88,4 +101,7 @@ namespace HW.Models
             _smtpClient.Dispose();
         }
     }
+
+
+
 }
