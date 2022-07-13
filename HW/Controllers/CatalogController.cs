@@ -1,4 +1,5 @@
 ﻿using HW.Models;
+using HW.Models.MailKit;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Collections.Generic;
@@ -20,12 +21,14 @@ namespace HW.Controllers
         }
 
 
-        private static Catalog _catalog = new();
+        private static InvalidPropertyException _catalog = new();
+
         private readonly IEmailSender _emailSender;
 
-        public CatalogController (IEmailSender emailSender)
+        public CatalogController (IEmailSender emailSender, InvalidPropertyException catalog)
         {
             _emailSender = emailSender;
+            _catalog = catalog;
         }
 
         [HttpGet]
@@ -43,10 +46,10 @@ namespace HW.Controllers
         }
 
         [HttpPost]
-        public IActionResult Categories(Category category, Prices price)
+        public IActionResult Categories(Category category)
         {            
-            _catalog.Products.Add(category);
-            _emailSender.Send(senderName: "Оповещатель", to: "mail@mail.ru", subject: "",  htmlBody: "", senderEmail: "");
+            //_catalog.Product.Add(category);
+            _emailSender.Send(senderName: "Оповещатель", to: "AB23051990@yandex.ru", subject: "",  htmlBody: "", senderEmail: "");
             
             return View(_catalog);
         }
